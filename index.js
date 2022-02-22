@@ -13,6 +13,15 @@ const client = new Client({
 
 client.once('ready', () => {
 	console.log(chalk.black.bgYellow.bold(' UXIE ') + ' Ready!');
+	client.user.setPresence({
+		activities: [
+			{
+				type: 'WATCHING',
+				name: 'for p!hint.',
+			},
+		],
+		status: 'idle',
+	});
 });
 
 client.on('messageCreate', async (message) => {
