@@ -41,15 +41,19 @@ client.on('messageCreate', async (message) => {
 			.setAuthor({ name: 'Uxie says', iconURL: client.user.avatarURL() });
 
 		if (results.length > 0) {
-			const id = pokemon.getId(results[0]);
-			const response = await axios.get(
-				`https://pokeapi.co/api/v2/pokemon/${id}`
-			);
-			const sprite =
-				response.data.sprites.other['official-artwork'][
-					'front_default'
-				];
-			embed.setDescription(results.join('\n')).setThumbnail(sprite);
+			const name = results[0].replaceAll(/\s/g, '-').toLowerCase();
+			try {
+				const response = await axios.get(
+					`https://pokeapi.co/api/v2/pokemon/${name}`
+				);
+				const sprite =
+					response.data.sprites.other['official-artwork'][
+						'front_default'
+					];
+				embed.setThumbnail(sprite);
+			} finally {
+				embed.setDescription(results.join('\n'));
+			}
 		} else embed.setDescription('No results found.');
 
 		message.channel.send({ embeds: [embed] });
